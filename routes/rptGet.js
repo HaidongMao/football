@@ -36,8 +36,8 @@ router.get('/', function(req, res, next){
 		// 建立连接 增加一个用户信息 
 		
 
-        var good = "请保持";
-        var bad  = "请注意";
+        var good = "请保持:";
+        var bad  = "请注意:";
         var res_result = {};
 		connection.query(userSQL.rptsql, function(err, result) {
 			// 以json形式，把操作结果返回给前台页面 
@@ -60,16 +60,16 @@ router.get('/', function(req, res, next){
 			}
 
 			if(good.charAt(good.length-1) == '/') {
-				good = good.slice(1,-1);
+				good = good.slice(0,-1);
 			}
 			if(bad.charAt(bad.length-1) == '/') {
-				bad = bad.slice(1,-1);
+				bad = bad.slice(0,-1);
 			}
 
-			if(good == "请保持") {
-				good = "";
+			if(good == "请保持:") {
+				//good = "";
 			}
-			if(bad == "请注意"){
+			if(bad == "请注意:"){
 				bad = "";
 			}
 			console.log(JSON.stringify(result));
@@ -79,6 +79,7 @@ router.get('/', function(req, res, next){
 		connection.query(userSQL.queryTime, function(err, result) {
 			console.log(JSON.stringify(result));
 			if(result) {
+				res_result["type"] = "report";
 				res_result["duration"] = result[0].mins + '分' + result[0].secs + '秒';
 				res_result["train_date"] = result[0].train_date;
 			}
