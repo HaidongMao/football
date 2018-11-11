@@ -25,11 +25,11 @@ router.post('/', function(req, res, next){
 		var param = req.body;   
 		// 建立连接 增加一个用户信息 
 		console.log("param=" + JSON.stringify(param));
-		connection.query(userSQL.insert, [param.hight,param.force,param.angle,param.x,param.y,param.z], function(err, result) {
+		connection.query(userSQL.trainEnd, [param.id], function(err, result) {
 			if(result) {
 				console.log(JSON.stringify(result)); 
 				result = {
-					id:result.insertId,
+					affectedRows:result.affectedRows,
 					code: 200,   
 					data:param
 				};  

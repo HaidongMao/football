@@ -11,6 +11,8 @@ var usersRouter = require('./routes/users');
 var trainAdd = require('./routes/trainAdd');
 var tainGet = require('./routes/trainGet');
 var rptGet = require('./routes/rptGet');
+var trainBegin = require('./routes/trainBegin');
+var trainEnd = require('./routes/trainEnd');
 
 var app = express();
 
@@ -37,6 +39,8 @@ app.use('/users', usersRouter);
 app.use('/train/add',trainAdd);
 app.use('/train/getall',tainGet);
 app.use('/train/getrpt',rptGet);
+app.use('/train/begin',trainBegin);
+app.use('/train/end',trainEnd);
 
 
 // catch 404 and forward to error handler
