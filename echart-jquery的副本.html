@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>智能足球训练器</title>
+</head>
+<body>
+    <script type="text/javascript" src="echarts.common.min.js"></script>
+    <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+
+    <div id="main" style="width: 600px;height:400px;"></div>
+    
+    <script type="text/javascript">
+        var myChart = echarts.init(document.getElementById('main'));
+        myChart.setOption({
+            title: {
+                text: '异步数据加载示例'
+            },
+            tooltip: {},
+            legend: {
+                data:['销量']
+            },
+            xAxis: {
+                data: []
+            },
+            yAxis: {},
+            series: [
+                {
+                    name: '高度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '标准高度',
+                    type: 'line',
+                    data: []
+                }
+            ]
+         });
+         
+         myChart.showLoading();
+         
+         var names=[]; //X轴
+         var nums=[];
+         var s_nums=[];
+         
+         $.ajax({
+             type : "get",
+             async : true,
+             url : "http://localhost:3000/train/getall",
+             data : {},
+             dataType : "json",
+             success : function(result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    for(var i=0;i<result.length;i++){
+                        names.push(i+1);
+                        nums.push(result[i].hight);
+                        s_nums.push(result[i].s_hight);
+                    }
+
+                    myChart.hideLoading();    //隐藏加载动画
+
+                    myChart.setOption({        //加载数据图表
+                        xAxis: {
+                            data: names
+                        },
+                        series: [
+                        {
+                            // 根据名字对应到相应的系列
+                            name: '高度',
+                            type: 'line',
+                            data: nums
+                        },
+                        {
+                            // 根据名字对应到相应的系列
+                            name: '规范高度',
+                            type: 'line',
+                            data: s_nums
+                        }
+                        ]
+                    });
+                        
+                }
+             
+            }, error : function(errorMsg) {
+                //请求失败时执行该函数
+                alert("图表请求数据失败!");
+                myChart.hideLoading();
+            }
+        })
+</script>
+</body>

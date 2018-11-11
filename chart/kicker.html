@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>智能足球训练器</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="maoyian">
+    <link rel="icon" href="football.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box-shadow" id="force">
+                    <div class="card-body">                         
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class=" box-shadow" id="angle">
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class=" box-shadow" id='hight'>
+                    <div class="card-body" >                         
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="box-shadow" id="count">
+                    <div class="card-body">
+                    </div>
+                </div>
+            </div>
+        </div>  
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box-shadow">
+                    <div class="card-body" hight="100 px" >                         
+                    </div>
+                </div>
+            </div>
+            
+        </div>  
+    </div>
+
+    <script type="text/javascript">
+        var chartForce = echarts.init(document.getElementById('force'));
+        chartForce.setOption({
+            grid:{
+                x:30, y:50, x2:5, y2:30, borderWidth:1
+            },
+            title: {
+                text: '力度',
+                right: 'center'
+            },
+            tooltip: {},
+            legend: {
+                data:['力度','规范力度'],
+                icon: 'line',
+                top: '20',
+                left: 'center'
+            },
+            xAxis: {
+                data: [],
+                axisLine:{show:false},
+                axisTick:{show:false},
+            },
+            yAxis: {
+                axisLine:{show:false},
+                axisTick:{show:false},
+            },
+            series: [
+                {
+                    name: '力度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '规范力度',
+                    type: 'line',
+                    data: []
+                }
+            ]
+         });
+         chartForce.showLoading();
+
+         var chartAngle = echarts.init(document.getElementById('angle'));
+         chartAngle.setOption({
+            grid:{
+                x:30, y:50, x2:5, y2:30, borderWidth:1
+            },
+            title: {
+                text: '角度',
+                right: 'center'
+            },
+            tooltip: {},
+            legend: {
+                data:['角度','规范角度'],
+                icon: 'line',
+                top: '20',
+                left: 'center'
+            },
+            xAxis: {
+                data: [],
+                axisLine:{show:false},
+                axisTick:{show:false},
+            },
+            yAxis: {
+                axisLine:{show:false},
+                axisTick:{show:false},
+            },
+            series: [
+                {
+                    name: '角度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '规范角度',
+                    type: 'line',
+                    data: []
+                }
+            ]
+         });
+         chartAngle.showLoading();
+
+         var chartHight = echarts.init(document.getElementById('hight'));
+         chartHight.setOption({
+            grid:{
+                x:30, y:50, x2:5, y2:30, borderWidth:1
+            },
+            title: {
+                text: '高度',
+                right: 'center'
+            },
+            tooltip: {},
+            legend: {
+                data:['高度','规范高度'],
+                icon: 'line',
+                top: '20',
+                left: 'center'
+            },
+            xAxis: {
+                data: [],
+                axisLine:{show:false},
+                axisTick:{show:false},
+            },
+            yAxis: {
+                axisLine:{show:false},
+                axisTick:{show:false},
+            },
+            series: [
+                {
+                    name: '高度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '规范高度',
+                    type: 'line',
+                    data: []
+                }
+            ]
+         });
+         chartHight.showLoading();
+
+         var chartCount = echarts.init(document.getElementById('count'));
+         chartCount.setOption({
+            grid:{
+                x:30, y:50, x2:5, y2:30, borderWidth:1
+            },
+            title: {
+                text: '次数',
+                x: 'center'
+            },
+            tooltip: {},
+            legend: {
+                show: false
+            },
+            series: []
+         });
+         chartCount.showLoading();
+         
+         var counts=[];     //X轴
+         //力度
+         var forces=[];
+         var s_forces=[];
+         //角度
+         var angles=[];
+         var s_angles=[];
+         //高度
+         var hights=[];
+         var s_hights=[];
+
+         
+         $.ajax({
+             type : "get",
+             async : true,
+             url : "http://192.168.3.11:3000/train/getall",
+             data : {},
+             dataType : "json",
+             success : function(result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    for(var i=0;i<result.data.length;i++){
+                        counts.push(i+1);
+
+                        forces.push(result.data[i].force);
+                        s_forces.push(result.data[i].s_force);
+
+                        angles.push(result.data[i].angle);
+                        s_angles.push(result.data[i].s_angle);
+
+                        hights.push(result.data[i].hight);
+                        s_hights.push(result.data[i].s_hight);
+
+
+                    }
+
+                    chartForce.hideLoading();
+                    chartForce.setOption({
+                        xAxis: {
+                            data: counts
+                        },
+                        series: [
+                        {
+                            name: '力度',
+                            type: 'line',
+                            data: forces
+                        },
+                        {
+                            name: '规范力度',
+                            type: 'line',
+                            data: s_forces
+                        }
+                        ]
+                    });
+
+                    chartAngle.hideLoading();
+                    chartAngle.setOption({
+                        xAxis: {
+                            data: counts
+                        },
+                        series: [
+                        {
+                            name: '角度',
+                            type: 'line',
+                            data: angles
+                        },
+                        {
+                            name: '规范角度',
+                            type: 'line',
+                            data: s_angles
+                        }
+                        ]
+                    });
+
+                    chartHight.hideLoading();
+                    chartHight.setOption({
+                        xAxis: {
+                            data: counts
+                        },
+                        series: [
+                        {
+                            name: '高度',
+                            type: 'line',
+                            data: hights
+                        },
+                        {
+                            name: '规范高度',
+                            type: 'line',
+                            data: s_hights
+                        }
+                        ]
+                    });
+
+                    chartCount.hideLoading();
+                    chartCount.setOption({
+                        title : {
+                            text: '次数',
+                            x:'center'
+                        },
+						calculable : 'true',
+                        series : [{
+                            name:'颠球次数',
+                            type:'pie',
+                            radius : '80%',
+                            center: ['50%','58%'],
+                            label:{
+								normal:{
+                                    show:true,
+                                    position:'inner',
+                                    textStyle : {
+                                        fontWeight:300 ,
+                                        fontSize:12 
+                                    },
+                                    formatter:'{b}:{c}({d}%)'
+                                }
+                            },
+                            data:result.count
+                        }]
+                    });
+                        
+                }
+             
+            }, error : function(errorMsg) {
+                //请求失败时执行该函数
+                alert("图表请求数据失败!");
+                chartHight.hideLoading();
+            }
+        })
+</script>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
