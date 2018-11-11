@@ -35,10 +35,16 @@ router.get('/', function(req, res, next){
 		var param = req.query || req.params;   
 		// 建立连接 增加一个用户信息 
 		//console.log("param=" + param);
+
+		var res_json = {};
+		connection.query(userSQL.rptsql, function(err, result) {
+			// 以json形式，把操作结果返回给前台页面 
+			res_json['count'] = [{name:'成功', value:result[0].succ},{name:'失败',value:result[0].fail}];
+		});
+
 		connection.query(userSQL.queryAll, function(err, result) {
 			// 以json形式，把操作结果返回给前台页面 
-			var res_json = {count:[{name:'成功',value:'7'},{name:'失败',value:'3'}],
-							data:result};
+			res_json['data'] = result;
 			responseJSON(res, res_json);   
 		 
 			// 释放连接  

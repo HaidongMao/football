@@ -34,39 +34,26 @@ router.get('/', function(req, res, next){
 		// 获取前台页面传过来的参数  
 		var param = req.query || req.params;   
 		// 建立连接 增加一个用户信息 
-		var sqlstr = "select count(*)-sum(f_ok) as fail, " +
-                     "sum(f_ok) as succ, " +
-                     "if(sum(f_strength)/count(*)-1>0.5, 1, 0) as strength_ok, " +
-                     "if(sum(f_angle)/count(*)-1>0.5, 1, 0) as angle_ok, " +
-                     "if(sum(f_hight)/count(*)-1>0.5, 1, 0) as hight_ok " +
-                     "from(" +
-	                 "select id,strength,angle,hight,s_strength,s_angle,s_hight,f_strength,f_angle,f_hight,f_strength+f_angle+f_hight as f_ok " +
-	                 "from	(SELECT b.id,strength,angle,hight,s_strength,s_angle,s_hight, " +
-				     "if(abs(strength/s_strength-1)<0.5, 1, 0) as f_strength, " +
-				     "if(abs(angle/s_angle-1)<0.5, 1, 0) as f_angle, " +
-				     "if(abs(hight/s_hight-1)<0.5, 1, 0) as f_hight " +
-				     "FROM standard_score as a, score as b) as t) " +
-                     "as t2 " +
-                     "group by f_ok,f_strength,f_angle,f_hight ;";
+		
 
         var good = "请保持";
         var bad  = "请注意";
         var res_result = {};
-		connection.query(sqlstr, function(err, result) {
+		connection.query(userSQL.rptsql, function(err, result) {
 			// 以json形式，把操作结果返回给前台页面 
-			if(result.strength_ok == 1){
+			if(result[0].strength_ok == 1){
 				good = good + '高度/';
 			} else {
 				bad = bad +  '高度/';
 			}
 
-			if(result.angle_ok == 1) {
+			if(result[0].angle_ok == 1) {
 				good = good + '角度/';
 			} else {
 				bad =  bad + '角度/';
 			}
 
-			if(result.hight_ok == 1) {
+			if(result[0].hight_ok == 1) {
 				good = good + '力度/';
 			} else {
 				bad =  bad + '力度/';
@@ -85,16 +72,15 @@ router.get('/', function(req, res, next){
 			if(bad == "请注意"){
 				bad = "";
 			}
-
-			res_result = {good:good,bad:bad};
-		 
+			console.log(JSON.stringify(result));
+			res_result = {good:good,bad:bad,count:result[0].cnt};
 		});
 
 		connection.query(userSQL.queryTime, function(err, result) {
 			console.log(JSON.stringify(result));
 			if(result) {
-				res_result["mins"] = result[0].mins;
-				res_result["secs"] = result[0].secs;
+				res_result["duration"] = result[0].mins + '分' + result[0].secs + '秒';
+				res_result["train_date"] = result[0].train_date;
 			}
 			responseJSON(res, res_result);   
 			// 释放连接  
