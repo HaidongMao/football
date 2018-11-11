@@ -31,12 +31,11 @@ router.all('*', function(req, res, next) {
 router.get('/', function(req, res, next){
  	// 从连接池获取连接 
 	pool.getConnection(function(err, connection) { 
-	// 获取前台页面传过来的参数  
+		// 获取前台页面传过来的参数  
 		var param = req.query || req.params;   
 		// 建立连接 增加一个用户信息 
 		//console.log("param=" + param);
 		connection.query(userSQL.queryAll, function(err, result) {
-				 
 			// 以json形式，把操作结果返回给前台页面 
 			var res_json = {count:[{name:'成功',value:'7'},{name:'失败',value:'3'}],
 							data:result};
