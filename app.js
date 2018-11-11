@@ -42,6 +42,11 @@ app.use('/train/getrpt',rptGet);
 app.use('/train/begin',trainBegin);
 app.use('/train/end',trainEnd);
 
+// 导入MySQL模块
+var mysql = require('mysql');
+var dbConfig = require('./db/dbconf');
+// 使用DBConfig.js的配置信息创建一个MySQL连接池
+var pool = mysql.createPool( dbConfig.mysql );
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

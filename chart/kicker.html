@@ -59,28 +59,7 @@
             </div>
         </div>  
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box-message">
-                    <div class="card-body"> 
-                        <span class="col-md-3">
-                            <ul>
-                                <li>日期:<span class="text-primary">2018-11-11</span></li>
-                                <li>时长:<span class="text-primary">1分10秒</span></li>
-                                <li>次数:<span class="text-primary">50</span></li>
-                            </ul>
-                        </span>           
-                        <span class="col-md-3">
-                            <ul>
-                                <li><span class="text-success">请保持力度、角度、高度</span></li>
-                                <li><span class="text-danger">请注意</span></li>
-                            </ul>
-                        </span>           
-                    </div>
-                </div>
-            </div>
-            
-        </div> 
+        
         
     </div>
 
@@ -222,6 +201,8 @@
          });
          chartCount.showLoading();
          
+         
+         setInterval(function(){
          var counts=[];     //X轴
          //力度
          var forces=[];
@@ -233,9 +214,9 @@
          var hights=[];
          var s_hights=[];
 
-         
          $.ajax({
              type : "get",
+             cache: true,
              async : true,
              url : "http://192.168.3.11:3000/train/getall",
              data : {},
@@ -344,11 +325,12 @@
                         
                 }
              
-            }, error : function(errorMsg) {
+            }, error : function(XMLHttpRequest, textStatus, errorThrown) {
                 //请求失败时执行该函数
-                alert("图表请求数据失败!");
+                alert("图表请求数据失败!"+ XMLHttpRequest.status + XMLHttpRequest.readyState + textStatus + errorThrown + XMLHttpRequest);
                 chartHight.hideLoading();
             }
+            },300);
         })
 </script>
 

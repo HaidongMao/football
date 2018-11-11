@@ -1,11 +1,8 @@
 var express = require('express');
 var router = express.Router();
-// 导入MySQL模块
-var mysql = require('mysql');
-var dbConfig = require('../db/dbconf');
 var userSQL = require('../db/userSQL');
-// 使用DBConfig.js的配置信息创建一个MySQL连接池
-var pool = mysql.createPool( dbConfig.mysql );
+var pool = require('../db/dbpool');
+
 // 响应一个JSON数据
 var responseJSON = function (res, ret) {
 	if(typeof ret === 'undefined') { 
@@ -29,6 +26,7 @@ router.all('*', function(req, res, next) {
 
 // 添加用户
 router.get('/', function(req, res, next){
+	var res_result = {};
  	// 从连接池获取连接 
 	pool.getConnection(function(err, connection) { 
 		// 获取前台页面传过来的参数  
@@ -38,7 +36,7 @@ router.get('/', function(req, res, next){
 
         var good = "请保持:";
         var bad  = "请注意:";
-        var res_result = {};
+        
 		connection.query(userSQL.rptsql, function(err, result) {
 			// 以json形式，把操作结果返回给前台页面 
 			if(result[0].strength_ok == 1){
@@ -74,8 +72,11 @@ router.get('/', function(req, res, next){
 			}
 			console.log(JSON.stringify(result));
 			res_result = {good:good,bad:bad,count:result[0].cnt};
+			connection.release();  
 		});
+	});
 
+	pool.getConnection(function(err, connection) {
 		connection.query(userSQL.queryTime, function(err, result) {
 			console.log(JSON.stringify(result));
 			if(result) {
