@@ -34,7 +34,7 @@ router.get('/', function(req, res, next){
 	// 获取前台页面传过来的参数  
 		var param = req.query || req.params;   
 		// 建立连接 增加一个用户信息 
-		console.log("param=" + param);
+		//console.log("param=" + param);
 		connection.query(userSQL.queryAll, function(err, result) {
 				 
 			// 以json形式，把操作结果返回给前台页面 
