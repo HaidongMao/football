@@ -58,9 +58,6 @@
                 </div>
             </div>
         </div>  
-
-        
-        
     </div>
 
     <script type="text/javascript">
@@ -327,7 +324,7 @@
              
             }, error : function(XMLHttpRequest, textStatus, errorThrown) {
                 //请求失败时执行该函数
-                alert("图表请求数据失败!"+ XMLHttpRequest.status + XMLHttpRequest.readyState + textStatus + errorThrown + XMLHttpRequest);
+                alert("图表请求数据失败!");
                 chartHight.hideLoading();
             }
             },300);
