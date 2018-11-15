@@ -31,11 +31,21 @@ router.get('/', function(req, res, next){
 	    //console.log("db connection id:" + connection.threadId);
 		var res_json = {};
 		connection.query(userSQL.rptsql, function(err, result) {
-			res_json['count'] = [{name:'成功', value:result[0].succ},{name:'失败',value:result[0].fail}];
+			console.log(JSON.stringify(result));
+			if(result && result.count>0){
+				res_json['count'] = [{name:'成功', value:result[0].succ},{name:'失败',value:result[0].fail}];
+			} else {
+				res_json['count'] = [{name:'成功',value:0},{name:'失败',value:0}];
+			}
 		});
 
 		connection.query(userSQL.queryAll, function(err, result) {
-			res_json['data'] = result;
+			if (result){
+				res_json['data'] = result;
+			} else {
+				res_json['data'] = [];
+			}
+			
 			responseJSON(res, res_json);   
 			connection.release();  
 		 

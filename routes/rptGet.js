@@ -33,44 +33,52 @@ router.get('/', function(req, res, next){
         var bad  = "请注意:";
 		console.log("connection id " + connection.threadId);
 		connection.query(userSQL.rptsql, function(err, result) {
-			if(result[0].strength_ok == 1){
-				good = good + '高度/';
+			if (result && result.length>0) {
+				if(result[0].strength_ok == 1){
+					good = good + '高度/';
+				} else {
+					bad = bad +  '高度/';
+				}
+
+				if(result[0].angle_ok == 1) {
+					good = good + '角度/';
+				} else {
+					bad =  bad + '角度/';
+				}
+
+				if(result[0].hight_ok == 1) {
+					good = good + '力度/';
+				} else {
+					bad =  bad + '力度/';
+				}
+
+				if(good.charAt(good.length-1) == '/') {
+					good = good.slice(0,-1);
+				}
+				if(bad.charAt(bad.length-1) == '/') {
+					bad = bad.slice(0,-1);
+				}
+
+				/*
+				if(good == "请保持:") {
+					good = "";
+				}
+				if(bad == "请注意:"){
+					bad = "";
+				} */
+				//console.log(JSON.stringify(result));		
+				res_result = {good:good,bad:bad,count:result[0].cnt};		
 			} else {
-				bad = bad +  '高度/';
+				res_result = {good:good,bad:bad,count:0};
 			}
 
-			if(result[0].angle_ok == 1) {
-				good = good + '角度/';
-			} else {
-				bad =  bad + '角度/';
-			}
-
-			if(result[0].hight_ok == 1) {
-				good = good + '力度/';
-			} else {
-				bad =  bad + '力度/';
-			}
-
-			if(good.charAt(good.length-1) == '/') {
-				good = good.slice(0,-1);
-			}
-			if(bad.charAt(bad.length-1) == '/') {
-				bad = bad.slice(0,-1);
-			}
-
-			/*
-			if(good == "请保持:") {
-				good = "";
-			}
-			if(bad == "请注意:"){
-				bad = "";
-			} */
-			//console.log(JSON.stringify(result));
-			res_result = {good:good,bad:bad,count:result[0].cnt};
+			
 		});
 		connection.query(userSQL.queryTime, function(err, result) {
 			console.log(JSON.stringify(result));
-			if(result) {
+			console.log(result.length);
+			if(result && result.length>0) {
+				console.log(JSON.stringify(result));
 				res_result['type'] = 'report';
 				res_result["duration"] = result[0].mins + '分' + result[0].secs + '秒';
 				res_result["train_date"] = result[0].train_date;

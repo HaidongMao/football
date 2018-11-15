@@ -22,6 +22,7 @@ router.post('/', function(req, res, next){
 			if(result) {
 				console.log(JSON.stringify(result)); 
 				result = {
+					type:'end_train',
 					affectedRows:result.affectedRows,
 					code: 200,   
 					data:param
