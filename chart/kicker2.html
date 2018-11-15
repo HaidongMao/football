@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <title>智能足球训练器</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="maoyian">
+    <link rel="icon" href="football.ico">
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="js/ie-emulation-modes-warning.js"></script>
+
+    <!-- Custom styles for this template -->
+    <link href="css/carousel.css" rel="stylesheet">
+
+    <script type="text/javascript" src="js/echarts.common.min.js"></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box-shadow" id="force">
+                    <div class="card-body">                         
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+    <script type="text/javascript">
+        var chartForce = echarts.init(document.getElementById('force'));
+        chartForce.setOption({
+            grid:{
+                x:30, y:10, x2:5, y2:50, borderWidth:1
+            },
+            
+            tooltip: {},
+            legend: {
+                data:['力度','规范力度','角度','规范角度','高度','规范高度'],
+                icon: 'line',
+                bottom: '5',
+                left: 'center'
+            },
+            xAxis: {
+
+                data: [],
+                axisLine:{show:false},
+                axisTick:{show:false},
+                name:'次数',
+                nameLocation:'end',
+                nameTextStyle:{
+                    fontSize:12,
+                    nameGap:0
+                }
+            },
+            yAxis: {
+                axisLabel:{show: false},
+                axisLine:{show:false},
+                axisTick:{show:false},
+                scale:true
+            },
+            series: [
+                {
+                    name: '力度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '规范力度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '角度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '规范角度',
+                    type: 'line',
+                    data: []
+                },
+
+                {
+                    name: '高度',
+                    type: 'line',
+                    data: []
+                },
+                {
+                    name: '规范高度',
+                    type: 'line',
+                    data: []
+                }
+            ]
+         });
+         chartForce.showLoading();
+
+
+         
+         
+         window.onload = function(){
+         var counts=[];     //X轴
+         //力度
+         var forces=[];
+         var s_forces=[];
+         //角度
+         var angles=[];
+         var s_angles=[];
+         //高度
+         var hights=[];
+         var s_hights=[];
+
+         $.ajax({
+             type : "get",
+             cache: true,
+             async : true,
+             url : "http://192.168.3.11:3000/train/getall",
+             data : {},
+             dataType : "json",
+             success : function(result) {
+                //请求成功时执行该函数内容，result即为服务器返回的json对象
+                if (result) {
+                    for(var i=0;i<result.data.length;i++){
+                        counts.push(i+1);
+
+                        forces.push(result.data[i].strength);
+                        s_forces.push(result.data[i].s_strength);
+
+                        angles.push(result.data[i].angle);
+                        s_angles.push(result.data[i].s_angle);
+
+                        hights.push(result.data[i].hight);
+                        s_hights.push(result.data[i].s_hight);
+
+
+                    }
+
+                    chartForce.hideLoading();
+                    chartForce.setOption({
+                        xAxis: {
+                            data: counts
+                        },
+                        series: [
+                        {
+                            name: '力度',
+                            type: 'line',
+                            data: forces
+                        },
+                        {
+                            name: '规范力度',
+                            type: 'line',
+                            data: s_forces
+                        },
+                        {
+                            name: '角度',
+                            type: 'line',
+                            data: angles
+                        },
+                        {
+                            name: '规范角度',
+                            type: 'line',
+                            data: s_angles
+                        },
+                        {
+                            name: '高度',
+                            type: 'line',
+                            data: hights
+                        },
+                        {
+                            name: '规范高度',
+                            type: 'line',
+                            data: s_hights
+                        }
+                        ]
+                    });
+                }
+             
+            }, error : function(XMLHttpRequest, textStatus, errorThrown) {
+                //请求失败时执行该函数
+                //alert("图表请求数据失败!");
+                chartHight.hideLoading();
+            }
+            })
+        }
+</script>
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/bootstrap.min.js"></script>
+
+</body>
