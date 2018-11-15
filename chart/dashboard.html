@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>钟表</title>
+    
+    <style type="text/css">
+        /*钟表圆圈的样式*/
+        .circle {
+            position: relative;
+            margin: 0 0;
+            width: 200px;
+            height: 100px;
+            border: 3px solid black;
+			border-bottom:transparent;
+            border-radius: 200px 200px 0 0;
+			background: -webkit-linear-gradient(top,#AAAAAA,#666666);
+			text-align:center;
+        }
+        /*秒针*/
+        #sec {
+            position: absolute;
+            top: 99px;
+            left: 99px;
+            width: 5px;
+            height: 90px;
+            background-color: chocolate;
+            -webkit-transform-origin: 50% 0%;
+            -moz-transform-origin: 50% 0%;
+            -ms-transform-origin: 50% 0%;
+            -o-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+        }
+        /*钟表中心圆点*/
+        #point {
+            position: absolute;
+            z-index: 1;
+            top: 90px;
+            left: 90px;
+            width: 20px;
+            height: 20px;
+            background-color: red;
+            border-radius: 10px;
+        }
+        /*钟表刻度*/
+        ul li {
+            list-style: none;
+            position: absolute;
+            top: 100px;
+            left: 99px;
+            width: 2px;
+            height: 97px;
+            border-bottom: 4px solid black;
+            -webkit-transform-origin: 50% 0%;
+            -moz-transform-origin: 50% 0%;
+            -ms-transform-origin: 50% 0%;
+            -o-transform-origin: 50% 0%;
+            transform-origin: 50% 0%;
+        }
+        /*钟表小时刻度，就是长一点的那个刻度*/
+        ul li.lang {
+            height: 93px;
+            border-bottom: 8px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="circle">
+        <div id="point"></div>
+        <div id="sec"></div>
+        <ul>
+        </ul>
+		力度
+    </div>
+</body>
+<script type="text/javascript">
+
+	//分别获取时针，分针，秒针和刻度的父元素ul
+    var hour=document.getElementById("hour");
+    var oul=document.getElementsByTagName("ul")[0];
+   
+	//动态创建60个li表示钟表刻度并添加到父元素ul内
+    var olis="";
+    for (var i=0;i<30;i++){
+        olis+="<li></li>";
+    }
+    oul.innerHTML=olis;
+	//获取创建好的每一个li
+    var oLis=document.getElementsByTagName("li");
+    for(var i=0;i<30;i++){
+		//每隔五个就有一个小时刻度，让它获取lang这个样式
+        if(i%5==0){
+            oLis[i].className="lang";
+        }
+		//整圆360度，每一个刻度是6度，让第i个li旋转6i度
+        oLis[i].style.transform="rotateZ("+(i*6+90)+"deg)";
+    }
+
+    function update(val, max){
+		val = val>max?val-max:val;
+		var angle = (val*180/max) + 90;
+		sec.style.transform="rotateZ("+angle+"deg)";
+		sec.style.webkitTransform="rotateZ("+angle+"deg)";
+		sec.style.oTransform="rotateZ("+angle+"deg)";
+		sec.style.msTransform="rotateZ("+angle+"deg)";
+		sec.style.mozTransform="rotateZ("+angle+"deg)";
+    }
+	update(370,360);
+</script>
+</html>

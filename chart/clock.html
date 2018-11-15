@@ -9,10 +9,9 @@
             position: relative;
             margin: 150px auto;
             width: 200px;
-            height: 100px;
-            border: 3px solid black;
-			border-bottom:none;
-            border-radius: 200px 200px 0 0;
+            height: 200px;
+            border: 5px solid black;
+            border-radius: 200px;
         }
         /*时针*/
         #hour {
@@ -20,16 +19,13 @@
             top: 97px;
             left: 97px;
             width: 6px;
-            height: 90px;
-            background-color: none;
-
-            border: 1px solid black;
+            height: 60px;
+            background-color: blue;
             -webkit-transform-origin: 50% 0%;
             -moz-transform-origin: 50% 0%;
             -ms-transform-origin: 50% 0%;
             -o-transform-origin: 50% 0%;
             transform-origin: 50% 0%;
-            border-radius: 0 0 100% 100%;
         }
         /*分针*/
         #min {
@@ -101,6 +97,7 @@
         <ul>
 
         </ul>
+        
     </div>
 
 </body>
@@ -114,19 +111,19 @@
 
 //      动态创建60个li表示钟表刻度并添加到父元素ul内
     var olis="";
-    for (var i=0;i<30;i++){
+    for (var i=0;i<60;i++){
         olis+="<li></li>";
     }
     oul.innerHTML=olis;
 //        获取创建好的每一个li
     var oLis=document.getElementsByTagName("li");
-    for(var i=0;i<30;i++){
+    for(var i=0;i<60;i++){
 //        每隔五个就有一个小时刻度，让它获取lang这个样式
         if(i%5==0){
             oLis[i].className="lang";
         }
 //        整圆360度，每一个刻度是6度，让第i个li旋转6i度
-        oLis[i].style.transform="rotateZ("+(i*6+90)+"deg)";
+        oLis[i].style.transform="rotateZ("+i*6+"deg)";
     }
 
 
