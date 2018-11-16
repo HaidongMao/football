@@ -17,7 +17,7 @@ var responseJSON = function (res, ret) {
 router.post('/', function(req, res, next){
 	pool.getConnection(function(err, connection) { 
 		var param = req.body;   
-		console.log("param=" + JSON.stringify(param));
+		console.log("trainning begin: param=" + JSON.stringify(param));
 		connection.query(userSQL.trainBegin, [], function(err, result) {
 			if(result) {
 				console.log(JSON.stringify(result)); 

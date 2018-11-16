@@ -199,7 +199,7 @@
          chartCount.showLoading();
          
          
-         setInterval(function(){
+         
          var counts=[];     //X轴
          //力度
          var forces=[];
@@ -215,7 +215,7 @@
              type : "get",
              cache: true,
              async : true,
-             url : "http://192.168.3.11:3000/train/getall",
+             url : "http://192.168.3.100:3000/train/getall",
              data : {},
              dataType : "json",
              success : function(result) {
@@ -327,7 +327,7 @@
                 //alert("图表请求数据失败!");
                 chartHight.hideLoading();
             }
-            },1000);
+            
         })
 </script>
 

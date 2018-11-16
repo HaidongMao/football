@@ -20,7 +20,7 @@ router.post('/', function(req, res, next){
 		//console.log("param=" + JSON.stringify(param));
 		connection.query(userSQL.insert, [param.hight,param.force,param.angle,param.x,param.y,param.z], function(err, result) {
 			if(result) {
-				console.log(JSON.stringify(result)); 
+				//console.log(JSON.stringify(result)); 
 				result = {
 					id:result.insertId,
 					code: 200,   

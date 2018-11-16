@@ -30,12 +30,13 @@
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-xs-12">
                 <div class="box-shadow" id="force">
                     <div class="card-body">                         
                     </div>
                 </div>
             </div>
+            
         </div>
 
         
@@ -44,7 +45,7 @@
         var chartForce = echarts.init(document.getElementById('force'));
         chartForce.setOption({
             grid:{
-                x:30, y:10, x2:5, y2:50, borderWidth:1
+                x:30, y:20, x2:5, y2:50, borderWidth:1
             },
             
             tooltip: {},
@@ -55,7 +56,6 @@
                 left: 'center'
             },
             xAxis: {
-
                 data: [],
                 axisLine:{show:false},
                 axisTick:{show:false},
@@ -66,12 +66,25 @@
                     nameGap:0
                 }
             },
-            yAxis: {
+            yAxis: [{
                 axisLabel:{show: false},
                 axisLine:{show:false},
                 axisTick:{show:false},
+                splitLine: { show: false},
                 scale:true
-            },
+            },{
+                axisLabel:{show: false},
+                axisLine:{show:false},
+                axisTick:{show:false},
+                splitLine: { show: false},
+                scale:true
+            },{
+                axisLabel:{show: false},
+                axisLine:{show:false},
+                axisTick:{show:false},
+                splitLine: { show: false},
+                scale:true
+            }],
             series: [
                 {
                     name: '力度',
@@ -127,7 +140,7 @@
              type : "get",
              cache: true,
              async : true,
-             url : "http://192.168.3.11:3000/train/getall",
+             url : "http://192.168.3.100:3000/train/getall",
              data : {},
              dataType : "json",
              success : function(result) {
@@ -157,32 +170,74 @@
                         {
                             name: '力度',
                             type: 'line',
-                            data: forces
+                            data: forces,
+                            itemStyle : {
+                                normal : {
+                                    color:'#FF0000',
+                                    lineStyle:{type:'solid'}
+                                }
+                            },
+                            yAxisIndex:0
                         },
                         {
                             name: '规范力度',
                             type: 'line',
-                            data: s_forces
+                            data: s_forces,
+                            itemStyle : {
+                                normal : {
+                                    color:'#FF0066',
+                                    lineStyle:{type:'dotted'}
+                                }
+                            },
+                            yAxisIndex:0
                         },
                         {
                             name: '角度',
                             type: 'line',
-                            data: angles
+                            data: angles,
+                            itemStyle : {
+                                normal : {
+                                    color:'#0000FF',
+                                    lineStyle:{type:'solid'}
+                                }
+                            },
+                            yAxisIndex:1
                         },
                         {
                             name: '规范角度',
                             type: 'line',
-                            data: s_angles
+                            data: s_angles,
+                            itemStyle : {
+                                normal : {
+                                    color:'#000099',
+                                    lineStyle:{type:'dotted'}
+                                }
+                            },
+                            yAxisIndex:1
                         },
                         {
                             name: '高度',
                             type: 'line',
-                            data: hights
+                            data: hights,
+                            itemStyle : {
+                                normal : {
+                                    color:'#00FF00',
+                                    lineStyle:{type:'solid'}
+                                }
+                            },
+                            yAxisIndex:2
                         },
                         {
                             name: '规范高度',
                             type: 'line',
-                            data: s_hights
+                            data: s_hights,
+                            itemStyle : {
+                                normal : {
+                                    color:'#009900',
+                                    lineStyle:{type:'dotted'}
+                                }
+                            },
+                            yAxisIndex:2
                         }
                         ]
                     });
@@ -196,6 +251,7 @@
             })
         }
 </script>
+
 
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="js/bootstrap.min.js"></script>

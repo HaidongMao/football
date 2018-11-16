@@ -75,8 +75,8 @@ router.get('/', function(req, res, next){
 			
 		});
 		connection.query(userSQL.queryTime, function(err, result) {
-			console.log(JSON.stringify(result));
-			console.log(result.length);
+			//console.log(JSON.stringify(result));
+			//console.log(result.length);
 			if(result && result.length>0) {
 				console.log(JSON.stringify(result));
 				res_result['type'] = 'report';

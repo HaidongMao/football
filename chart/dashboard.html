@@ -9,21 +9,21 @@
         .circle {
             position: relative;
             margin: 0 0;
-            width: 200px;
-            height: 100px;
+            width: 100px;
+            height: 50px;
             border: 3px solid black;
 			border-bottom:transparent;
-            border-radius: 200px 200px 0 0;
+            border-radius: 100px 100px 0 0;
 			background: -webkit-linear-gradient(top,#AAAAAA,#666666);
 			text-align:center;
         }
         /*秒针*/
         #sec {
             position: absolute;
-            top: 99px;
-            left: 99px;
+            top: 49px;
+            left:49px;
             width: 5px;
-            height: 90px;
+            height: 45px;
             background-color: chocolate;
             -webkit-transform-origin: 50% 0%;
             -moz-transform-origin: 50% 0%;
@@ -35,10 +35,10 @@
         #point {
             position: absolute;
             z-index: 1;
-            top: 90px;
-            left: 90px;
-            width: 20px;
-            height: 20px;
+            top: 45px;
+            left: 45px;
+            width: 10px;
+            height: 10px;
             background-color: red;
             border-radius: 10px;
         }
@@ -46,10 +46,10 @@
         ul li {
             list-style: none;
             position: absolute;
-            top: 100px;
-            left: 99px;
+            top: 50px;
+            left: 49px;
             width: 2px;
-            height: 97px;
+            height: 48px;
             border-bottom: 4px solid black;
             -webkit-transform-origin: 50% 0%;
             -moz-transform-origin: 50% 0%;
@@ -59,7 +59,7 @@
         }
         /*钟表小时刻度，就是长一点的那个刻度*/
         ul li.lang {
-            height: 93px;
+            height: 45px;
             border-bottom: 8px solid black;
         }
     </style>
@@ -94,6 +94,7 @@
         }
 		//整圆360度，每一个刻度是6度，让第i个li旋转6i度
         oLis[i].style.transform="rotateZ("+(i*6+90)+"deg)";
+
     }
 
     function update(val, max){
